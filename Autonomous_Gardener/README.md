@@ -4,7 +4,7 @@
 |---------------|-----------------|
 | Platform      | Arduino Nano    |
 | IDE           | Arduino v2.3.4  |
-| Author        | AndrewJKnowles  |
+| Author        | 110TFlops       |
 | Date Created  | 29/30/2025      |
 | Version       | v1.0            |
 | Last Uppdated | |
