@@ -10,13 +10,13 @@
 
 #include <Wire.h>
 
+#include "hardware_version.h"
 #include "water_pump.h"
 #include "soil.h"
 #include "pinout.h"
 #include "debug_defs.h"
 #include "pwr_mngr.h"
- 
-#define INTERRUPT_0           0             //pin D2
+
 #define RTC_DEVICE_ID         0x68
 
 #ifdef EN_DEBUGGING
@@ -35,11 +35,21 @@ static void Interrupt_ISR(void);
 * @brief Global Variables
 **************************/
 soil_health_t soil_health = {0};
+
+#if (HARDWARE_VERSION == 0)
 water_pump_t pump_cfg =
 {
   .state      = PUMP_OFF,
   .enable_pin = RELAY_SWITCH
 };
+
+#else if (HARDWARE_VERSION == 1)
+water_pump_t pump_cfg =
+{
+  .state      = PUMP_OFF,
+  .enable_pin = PUMP_EN
+};
+#endif //HARDWARE_VERSION
 
 volatile uint32_t seconds_passed = 0;
 volatile bool check_soil = true;
@@ -61,7 +71,7 @@ void setup()
   soil_health.soil_moisture_pin = SOIL_MOISTURE_PIN;
   Soil.LP_Filter_Settle(&soil_health);
   
-  attachInterrupt(INTERRUPT_0,Interrupt_ISR,FALLING);
+  attachInterrupt(INTERRUPT_0, Interrupt_ISR, FALLING);
   RTC_Set_Int_Freq();
 
 #ifdef EN_DEBUGGING

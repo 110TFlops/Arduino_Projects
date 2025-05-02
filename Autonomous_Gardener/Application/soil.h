@@ -3,7 +3,7 @@
 * @author   110TFlops
 * @date     26/03/2025
 * @version  1.0
-* @link		https://github.com/110TFlops/Arduino_Projects
+* @link		  https://github.com/110TFlops/Arduino_Projects
 * @brief    Available under the GNU GENERAL PUBLIC LICENSE without any 
 *           warranty or liability
 **************************************************************************/
@@ -12,8 +12,9 @@
 #define SOIL_H
 
 #include <stdint.h>
+#include "hardware_version.h"
 
-#define SOIL_MOISTURE_M_COEF         (float)0.64516129
+#define SOIL_MOISTURE_M_COEF          (float)0.64516129
 #define SOIL_MOISTURE_C_COEF          (float)-480.645161
 #define SOIL_STATE_UPPER_THRESH       70 //%
 #define SOIL_STATE_LOWER_THRESH       60 //%
@@ -45,6 +46,11 @@ class Soil
     Soil(void);
     void LP_Filter_Settle(soil_health_t *soil_record);
     void Get_Soil_Health(soil_health_t *soil_record);
+
+#if (HARDWARE_VERSION == 1)
+  private:
+    void Enable_Sense(uint8_t pin_state);
+#endif //HARDWARE_VERSION
 };
 
 #endif //SOIL_H
